@@ -1,0 +1,24 @@
+\section{Model Inputs}
+\label{sec:inputs}
+
+We compare a set of input structures that range in terms of the degree of structure: structured graphs based on dependency syntax, semi-structured subject-verb-object tuples, and unstructured free-text sentences.  Figure \ref{fig:compare}\todo{make} illustrates the differences in how sentence information is represented in each of these input structures.
+
+\subsection{Structured Graphlets}
+\label{sec:graphlet}
+
+For our structured representaion of the free-text inputs, we make use of the \textbf{graphlet} structure of \citet{jansen2017framing}.  The graphlets consist of nodes, containing sentence text, and edges that capture the syntactic dominance between nodes as well as certain specialized roles (e.g., \emph{instrument} and \emph{cause}), in the form of sparse edge labels.  An example sentence and its corresponding graphlet is shown in Figure \ref{fig:graphlet}.\todo{make? or just use the main compare figure?}   
+The structure was originally designed to strike a balance between structure and robustness -- i.e., to include enough context in each of the nodes to mitigate semantic drift, while still representing the underlying syntactic structure of the text.  %In this way, these graphlets can be construed as a middle ground between free-text and the dependency-syntax graph.
+
+To form the graphlets we use the software from \citet{jansen2017framing} which operates in a series of steps.  First the text is syntactically parsed using the sentences using the Stanford CoreNLP toolkit \cite{manning2014stanford}.  Then the dependency graph is used to decompose the sentence into the graphlet nodes by segmenting along specified dependencies that represent certain complements (e.g., \texttt{ccomp}), modifiers (e.g., \texttt{rcmod}), and prepositional phrases (e.g., \texttt{prep\_with}, etc.).  The text within the node is segmented into terms, i.e. one or more words.  While the default is one word, a term may contain a noun-noun compound or a comma-separated list.  These nodes are then connected by edges whenever there is an outgoing dependency from one node to another.  The edges are labeled as either \texttt{instrument, process, example, temporal, contrast}, or \texttt{unknown}, with the vast majority being labeled as \texttt{unknown}.  These labels are assigned based on specified dependency links (i.e. the dependency link \texttt{prep\_such\_as} corresponds to the label \texttt{example})\footnote{Please refer to \citet{jansen2017framing} for a more detail on the graphlet formation process, as well as a complete list of the dependencies used for graphlet decomposition and edge labeling}.  Finally, stop words are removed.
+\todo{using lemmas?}
+
+\subsection{Semi-Structured Tuples}
+\label{sec:tuples}
+
+For our semi-structured inputs, we use Open IE  \cite{Banko2007OpenIE} on the free-text inputs to generate a set of tuples, each containing \todo{XX} slots representing the subject, verb, and one or more objects.    
+\todo{content word filtering? other post-processing? tables?} \todo{using lemmas?}
+
+\subsection{Unstructured Free-Text}
+\label{sec:freetext}
+
+For our free-text, we only minimally pre-process: \todo{lemmas? stem?}, \todo{filter by... length? etc?}.
